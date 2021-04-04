@@ -1,0 +1,23 @@
+{% extends 'forum_etudiant/static.html' %}
+
+{% block static %}
+
+	{% for rep in reponses %}
+
+		<h1> {{ rep.probleme.titre }} </h1>
+		<p>
+			<h4>Nombre de vue: {{ rep.probleme.nbre_vue }}</h4> 
+			<h4>Status : {% if rep.probleme.status %}Probleme resolu{% else %}Probleme non resolu{% endif %}</h4> 
+			<h4>Date: {{ rep.probleme.date }}</h4>
+		</p>
+		<p>Nombre de like: {{ rep.nbre_like }}</p>
+		<a href="{% url 'detail_probleme' rep.probleme.id %}">Detail du probleme</a>
+		<h3>Votre reponse</h3>
+		{{ rep.reponse }}
+	{% if not forloop.last %}
+		<hr>
+	{% endif %}
+	{% empty %}
+		<h1>Aucune reponse pour le moment. <a href="{% url 'lister_probleme' %}">Liste</a> des problemes</h1>
+	{% endfor %}
+{% endblock %}

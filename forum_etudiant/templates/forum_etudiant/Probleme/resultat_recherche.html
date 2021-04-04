@@ -1,0 +1,19 @@
+{% extends 'forum_etudiant/static.html' %}
+
+{% block static %}
+
+	{% for result in resultat_recherches %}
+		<h1> {{ result.titre }} </h1>
+		<p>
+			<h4>Nombre de vue: {{ result.nbre_vue }}</h4> 
+			<h4>Status : {% if result.status %}Probleme resolu{% else %}Probleme non resolu{% endif %}</h4> 
+			<h4>Date: {{ result.date }}</h4>
+		</p>
+		<a href="{% url 'detail_probleme' result.pk %}">Detail</a>
+	{% if not forloop.last %}
+		<hr>
+	{% endif %}
+	{% empty %}
+		<h1>Aucun probleme pour le moment. <a href="{% url 'poser_probleme' %}">Poser</a> un probleme</h1>
+	{% endfor %}
+{% endblock %}

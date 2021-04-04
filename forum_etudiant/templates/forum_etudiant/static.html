@@ -1,0 +1,17 @@
+<form action="{% url 'rechercher_probleme' %}" method="post">
+	{% csrf_token %}
+	<input type="text" name="recherche" placeholder="Rechercher un probleme">
+	<input type="submit">
+</form>
+<nav>
+	<ul>
+		<li>Probleme
+			<li><a href="{% url 'poser_probleme' %}">Poser un probleme</a></li>
+			<li><a href="{% url 'lister_probleme' %}">Lister les problemes</a> </li>
+			<li><a href="{% url 'mes_problemes' %}">Mes problemes</a> </li>
+			<li><a href="{% url 'mes_reponses' %}">Mes reponses</a> </li>
+		</li>
+	</ul>
+</nav>
+{% block static %}
+{% endblock %}

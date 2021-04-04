@@ -1,0 +1,79 @@
+{% extends 'forum_etudiant/static.html' %}
+
+{% block static %}
+
+	{% for pb in problemes %}
+		
+		<h1> {{ pb.titre }} </h1>
+		<p>
+			<h4>Nombre de vue: {{ pb.nbre_vue }}</h4> 
+			<h4>Status : {% if pb.status %}Probleme resolu{% else %}Probleme non resolu{% endif %}</h4> 
+			<h4>Date: {{ pb.date }}</h4>
+		</p>
+		<a href="{% url 'detail_probleme' pb.id %}">Detail</a>
+		<a href="{% url 'modifier_probleme' pb.id %}">Mettre a jour</a>
+		<form action="{% url 'donner_reponse' pb.id %}" method="post">
+			{% csrf_token %}
+
+			<input type="button" value="G" style="font-weight: bold;" onclick="commande('bold');" />
+			<input type="button" value="I" style="font-style: italic;" onclick="commande('italic');" />
+			<input type="button" value="S" style="text-decoration: underline;" onclick="commande('underline');" />
+			<input type="button" value="Lien" onclick="commande('createLink');" />
+			<input type="button" value="Image" onclick="commande('insertImage');" />
+			<select onchange="commande('heading', this.value); this.selectedIndex = 0;">
+			  <option value="">Titre</option>
+			  <option value="h1">Titre 1</option>
+			  <option value="h2">Titre 2</option>
+			  <option value="h3">Titre 3</option>
+			  <option value="h4">Titre 4</option>
+			  <option value="h5">Titre 5</option>
+			  <option value="h6">Titre 6</option>
+			</select>
+			Donner une reponse
+			<div id="editeur" required  {% if not probleme.status %} contentEditable {% endif %}></div>
+			<textarea name="reponse" style="visibility: hidden;" id="resultat"></textarea>
+			<input style="visibility: hidden;" type="submit" id="soumettre">
+		</form>
+			<button onclick="resultat();" id="temp">Enregistrer</button>
+
+		</form>
+	{% if not forloop.last %}
+		<hr>
+	{% endif %}
+	{% empty %}
+		<h1>Aucun probleme pour le moment. <a href="{% url 'poser_probleme' %}">Poser</a> un probleme</h1>
+	{% endfor %}
+
+<style type="text/css">
+    #editeur,
+textarea {
+  width: 500px;
+  height: 200px;
+  border: 1px solid black;
+  padding: 5px;
+  overflow: auto;
+}
+</style>
+<script type="text/javascript">
+   function commande(nom, argument) {
+  if (typeof argument === 'undefined') {
+    argument = '';
+  }
+  switch (nom) {
+    case "createLink":
+      argument = prompt("Quelle est l'adresse du lien ?");
+      break;
+    case "insertImage":
+      argument = prompt("Quelle est l'adresse de l'image ?");
+      break;
+  }
+  // Exécuter la commande
+  document.execCommand(nom, false, argument);
+}
+function resultat() {
+	document.getElementById("temp").style.visibility = 'hidden';
+  document.getElementById("resultat").value = document.getElementById("editeur").innerHTML;
+  document.getElementById("soumettre").style.visibility = 'visible';
+}
+</script>
+{% endblock %}

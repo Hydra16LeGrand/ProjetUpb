@@ -1,0 +1,10 @@
+{% extends 'forum_etudiant/static.html' %}
+
+{% block static %}
+<form action="{% url 'poser_probleme' %}" method="post">
+	{% csrf_token %}
+	{{ form_class.as_p }}
+
+	<input type="submit" name="">
+</form>
+{% endblock %}
